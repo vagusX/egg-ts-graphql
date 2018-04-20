@@ -1,0 +1,43 @@
+import _ from 'lodash'
+
+export default class ItemConnector {
+  private proxy: any;
+  private ctx: any;
+
+  constructor() {
+    this.proxy = this.ctx.app.model.Item
+  }
+
+  async fetchByUserId(userID) {
+    const tags = await this.proxy
+      .findAll({
+        where: {
+          user_id: userID
+        }
+      })
+      .then(ts => ts.map(u => u.toJSON()))
+    return tags
+  }
+
+  async create(userID, content, expire) {
+    const item = await this.proxy.create(
+      _.pickBy({ user_id: userID, content, expire })
+    )
+    return item.toJSON()
+  }
+
+  async update(id, content, expire, done) {
+    await this.proxy.update(_.pickBy({ id, content, expire, done }), {
+      where: { id }
+    })
+    const item = await this.proxy.findOne({ where: { id } })
+    return item.toJSON()
+  }
+
+  async delete(id) {
+    const item = await this.proxy.findOne({ where: { id } })
+    const ret = item.toJSON()
+    await item.destroy()
+    return ret
+  }
+}
