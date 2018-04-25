@@ -1,5 +1,7 @@
 # hackernews-async-ts
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/vagusX/egg-ts-graphql.svg)](https://greenkeeper.io/)
+
 [Hacker News](https://news.ycombinator.com/) showcase using typescript && egg
 
 ## QuickStart
